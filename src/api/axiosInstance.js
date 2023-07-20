@@ -6,7 +6,6 @@ export const axiosInstance = axios.create({ baseURL })
 axiosInstance.interceptors.request.use(
   (config) => {
     const token = localStorage.getItem('authToken')
-    console.log(token)
     if (token) {
       // 在 headers 放入 jwt token 讓後端驗證身分
       config.headers.Authorization = `Bearer ${token}`
@@ -33,19 +32,19 @@ axiosInstance.interceptors.response.use(
         // 可以在這裡針對不同 status code 做處理
         case 401:
           alert('Unauthorized')
-          console.log(error.message)
+          console.error(error.message)
           break
         case 404:
           alert('Page Not Found')
-          console.log(error.message)
+          console.error(error.message)
           break
         case 500:
           alert('Internal Server Error')
-          console.log(error.message)
+          console.error(error.message)
           break
         default:
           alert('App broken')
-          console.log(error.message)
+          console.error(error.message)
       }
     }
     if (!window.navigator.onLine) {

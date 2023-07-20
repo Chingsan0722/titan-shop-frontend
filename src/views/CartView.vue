@@ -5,8 +5,7 @@ import { cartAPI } from '../api/cart'
 import { useCartStore } from '../stores/cart'
 const cart = useCartStore()
 const getCart = async () => {
-  const result = await cartAPI.getCart()
-  console.log(result)
+  await cartAPI.getCart()
 }
 getCart()
 </script>
