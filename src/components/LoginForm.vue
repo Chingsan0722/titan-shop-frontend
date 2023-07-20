@@ -5,7 +5,6 @@ import { ref } from 'vue'
 import { useRouter } from 'vue-router'
 
 const users = useUserStore()
-const rememberMe = ref(false)
 const router = useRouter()
 const login = async () => {
   const result = await signin({
@@ -15,9 +14,7 @@ const login = async () => {
   if (result.success) {
     console.log('Login successful')
     // 目前除非有勾 rememberMe 不然 local不會有東西
-    if (rememberMe.value) {
-      localStorage.setItem('authToken', result.token)
-    }
+    localStorage.setItem('authToken', result.token)
     users.token = result.token
     users.role = result.data.role
     users.login = ref(true)

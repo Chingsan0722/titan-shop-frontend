@@ -32,9 +32,9 @@
         </ul>
         <ul class="navbar-nav  flex-wrap bd-navbar-nav py-md-0">
           <li class="nav-item me-3">
-            <a class="nav-link flex-row position-relative" href="/cart" aria-disabled="true">
-              <img src="@/assets/cart.svg" alt="Cart Icon">
-              <span id="in-cart" class="position-absolute top-10 start-100 translate-middle badge rounded-pill bg-danger">2<span class="visually-hidden">unread messages</span></span>
+            <a type="button" class="btn btn-outline-primary" href="/cart">
+              購物車 <span class="badge bg-primary">9</span>
+              <span class="visually-hidden">in carts</span>
             </a>
           </li>
           <li class="nav-item">
