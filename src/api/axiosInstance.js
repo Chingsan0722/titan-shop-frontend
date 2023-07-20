@@ -1,5 +1,5 @@
 import axios from 'axios'
-export const baseURL = 'https://7e84-2001-b400-e23a-a0b6-1937-f2e0-fb7b-3c70.ngrok-free.app/api'
+export const baseURL = 'http://localhost:80/api'
 export const axiosInstance = axios.create({ baseURL })
 
 // request 攔截器

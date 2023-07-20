@@ -13,12 +13,12 @@ const login = async () => {
   })
   if (result.success) {
     console.log('Login successful')
-    // 目前除非有勾 rememberMe 不然 local不會有東西
+    console.log(result)
     localStorage.setItem('authToken', result.token)
+    localStorage.setItem('userInfo', JSON.stringify(result.data))
     users.token = result.token
     users.role = result.data.role
     users.login = ref(true)
-    console.log(users.login)
     router.push('/')
   } else {
     console.error('Login failed', result.error)

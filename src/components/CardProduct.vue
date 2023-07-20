@@ -1,36 +1,26 @@
 <script setup>
 import { ref } from 'vue'
+import { useUserStore } from '../stores/userInfo'
+const users = useUserStore()
+const role = users.role
+// eslint-disable-next-line vue/no-setup-props-destructure
+const { product } = defineProps(['product'])
 const count = ref(1)
 const addCart = () => {
   count.value++
-}
-const role = 'admin'
-const product = {
-  name: '磚頭',
-  price: 300,
-  stock: 10,
-  discription: '123'
 }
 </script>
 
 <template>
   <div class="card align-center">
-    <img src="@/assets/mockProduct.svg" class="card-img-top" alt="woman">
+    <router-link :to="`/product/${product.id}`">
+      <img :src="product.image" alt="Product Image" class="card-img-top">
+    </router-link>
     <div class="card-body">
       <h5 class="card-title text-center">{{ product.name }}</h5>
-      <div class="row">
-        <div class="col-sm-6">
-          <p class="text-end"><span class="amount-highlight">＄{{ product.price }}</span></p>
-        </div>
-        <div class="col-sm-6">
-          <p class="text-start">庫存 {{ product.stock }}</p>
-        </div>
-      </div>
+      <p class="text-center" style="color: black; text-decoration: none"><span class="amount-highlight">＄{{ product.price }}</span></p>
       <div class="text-center">
         <div class="row justify-content-center mb-2">
-          <div class="col-md-6">
-            <input type="number" class="form-control text-center" value="1" min="1" id="quantity-input">
-          </div>
         </div>
         <button v-if="role === 'user'" class="btn btn-primary" @click="addCart">加到購物車</button>
         <button v-else-if="role === 'admin'" class="btn btn-warning" @click="addCart">下架商品</button>

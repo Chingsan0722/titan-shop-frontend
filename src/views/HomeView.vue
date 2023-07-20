@@ -4,8 +4,21 @@ import DropdownMenu from '../components/DropdownMenu.vue'
 import PriceRange from '../components/PriceRange.vue'
 import Pagination from '../components/PaginationComp.vue'
 import LoginNotify from '../components/LoginNotify.vue'
+import { storeToRefs } from 'pinia'
+import { useProductStore } from '@/stores/product'
+import { productAPI } from '../api/product'
+import { useRouter } from 'vue-router'
+const productStore = useProductStore()
+const getData = async () => {
+  const result = await productAPI.getAllProducts()
+  if (result) {
+    productStore.setProducts(result.data)
+  } else {
+    console.error('Get products failed', result.error)
+  }
+}
+getData()
 </script>
-
 <template>
   <LoginNotify/>
   <div class="container mt-2">
@@ -20,43 +33,11 @@ import LoginNotify from '../components/LoginNotify.vue'
       </div>
     </div>
     <div class="row justify-content-center">
-      <div class="col col-md-3 mb-3">
-        <CardProduct/>
-      </div>
-      <div class="col col-md-3 mb-3">
-        <CardProduct/>
-      </div>
-      <div class="col col-md-3 mb-3">
-        <CardProduct/>
-      </div>
-      <div class="col col-md-3 mb-3">
-        <CardProduct/>
-      </div>
-      <div class="col col-md-3 mb-3">
-        <CardProduct/>
-      </div>
-      <div class="col col-md-3 mb-3">
-        <CardProduct/>
-      </div>
-      <div class="col col-md-3 mb-3">
-        <CardProduct/>
-      </div>
-      <div class="col col-md-3 mb-3">
-        <CardProduct/>
-      </div>
-      <div class="col col-md-3 mb-3">
-        <CardProduct/>
-      </div>
-      <div class="col col-md-3 mb-3">
-        <CardProduct/>
-      </div>
-      <div class="col col-md-3 mb-3">
-        <CardProduct/>
-      </div>
-      <div class="col col-md-3 mb-3">
-        <CardProduct/>
+      <!-- Loop through the products array from the Pinia store -->
+      <div v-for="product in productStore.products" :key="product.id" class="col col-md-3 mb-3">
+        <CardProduct :product="product" />
       </div>
     </div>
+    <Pagination/>
   </div>
-  <Pagination/>
 </template>

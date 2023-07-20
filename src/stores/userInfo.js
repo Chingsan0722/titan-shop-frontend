@@ -5,9 +5,11 @@ import { defineStore } from 'pinia'
 import { ref } from 'vue'
 export const useUserStore = defineStore('users', {
   state: () => ({
+    id: ref(''),
     account: ref(''),
     password: ref(''),
-    role: '',
+    name: ref(''),
+    role: 'user',
     rememberMe: ref(false),
     login: ref(false),
     token: ''
@@ -15,8 +17,17 @@ export const useUserStore = defineStore('users', {
   // could also be defined as
   // state: () => ({ count: 0 })
   actions: {
-    // increment () {
-    //   this.count++
-    // }
+    initUserData () {
+      const token = localStorage.getItem('authToken')
+      const userInfoJson = localStorage.getItem('userInfo')
+      const userInfo = userInfoJson ? JSON.parse(userInfoJson) : {}
+      if (token) this.token = token
+      if (userInfo) {
+        this.id = userInfo.id
+        this.account = userInfo.account
+        this.name = userInfo.name
+        this.role = userInfo.role || 'user'
+      }
+    }
   }
 })

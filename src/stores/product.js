@@ -2,16 +2,18 @@
 import { defineStore } from 'pinia'
 // 引入 signin api
 // 先留著
-import { ref } from 'vue'
+// import { ref } from 'vue'
 export const useProductStore = defineStore('products', {
   state: () => ({
-    data: ref([])
+    data: null,
+    products: []
   }),
-  // could also be defined as
-  // state: () => ({ count: 0 })
   actions: {
-    // increment () {
-    //   this.count++
-    // }
+    setData (data) {
+      this.data = data
+    },
+    setProducts (products) {
+      this.products = products
+    }
   }
 })
