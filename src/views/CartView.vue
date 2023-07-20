@@ -1,6 +1,14 @@
 <script setup>
 import CartItems from '../components/CartItems.vue'
 import CartSummary from '../components/CartSummary.vue'
+import { cartAPI } from '../api/cart'
+import { useCartStore } from '../stores/cart'
+const cart = useCartStore()
+const getCart = async () => {
+  const result = await cartAPI.getCart()
+  console.log(result)
+}
+getCart()
 </script>
 <template>
   <div class="container mt-5">

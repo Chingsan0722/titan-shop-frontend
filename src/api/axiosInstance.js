@@ -1,10 +1,12 @@
 import axios from 'axios'
-const baseURL = 'https://7958-2001-b400-e239-9c76-9166-d18-e811-231e.ngrok-free.app/api'
-const axiosInstance = axios.create({ baseURL })
+export const baseURL = 'https://7e84-2001-b400-e23a-a0b6-1937-f2e0-fb7b-3c70.ngrok-free.app/api'
+export const axiosInstance = axios.create({ baseURL })
+
 // request 攔截器
 axiosInstance.interceptors.request.use(
   (config) => {
     const token = localStorage.getItem('authToken')
+    console.log(token)
     if (token) {
       // 在 headers 放入 jwt token 讓後端驗證身分
       config.headers.Authorization = `Bearer ${token}`
@@ -17,7 +19,7 @@ axiosInstance.interceptors.request.use(
 )
 
 // response 攔截器
-axios.interceptors.response.use(
+axiosInstance.interceptors.response.use(
   (response) => {
   // 回傳的 status code 在 2xx 區間會觸發這個函式
   // 可以在這裡拿到 response 做處理
@@ -52,4 +54,3 @@ axios.interceptors.response.use(
     }
     return Promise.reject(error)
   })
-export default axiosInstance

@@ -1,4 +1,21 @@
-<script setup></script>
+<script setup>
+import { useProductStore } from '@/stores/product'
+import { productAPI } from '../api/product'
+import { ref } from 'vue'
+import { useRouter } from 'vue-router'
+const product = useProductStore()
+const router = useRouter()
+const id = 1
+const getProduct = async () => {
+  const result = await productAPI.getProduct(id)
+  if (result) {
+    console.log(result)
+  } else {
+    console.error('Get product failed', result.error)
+  }
+}
+getProduct()
+</script>
 <template>
   <div class="container mt-5">
     <div class="row">
