@@ -9,10 +9,10 @@ export const useUserStore = defineStore('users', {
     account: ref(''),
     password: ref(''),
     name: ref(''),
-    role: 'user',
+    role: ref('visitor'),
     rememberMe: ref(false),
     login: ref(false),
-    token: ''
+    token: ref('')
   }),
   // could also be defined as
   // state: () => ({ count: 0 })
@@ -26,8 +26,18 @@ export const useUserStore = defineStore('users', {
         this.id = userInfo.id
         this.account = userInfo.account
         this.name = userInfo.name
-        this.role = userInfo.role || 'user'
+        this.role = userInfo.role || 'visitor'
       }
+    },
+    logOut () {
+      this.id = ''
+      this.account = ''
+      this.name = ''
+      this.role = ref('visitor')
+      this.login = false
+      this.token = ''
+      localStorage.removeItem('authToken')
+      localStorage.removeItem('userInfo')
     }
   }
 })

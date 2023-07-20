@@ -3,7 +3,6 @@ import CardProduct from '../components/CardProduct.vue'
 import DropdownMenu from '../components/DropdownMenu.vue'
 import PriceRange from '../components/PriceRange.vue'
 import Pagination from '../components/PaginationComp.vue'
-import LoginNotify from '../components/LoginNotify.vue'
 import { storeToRefs } from 'pinia'
 import { useProductStore } from '@/stores/product'
 import { productAPI } from '../api/product'
@@ -20,7 +19,6 @@ const getData = async () => {
 getData()
 </script>
 <template>
-  <LoginNotify/>
   <div class="container mt-2">
     <h1 class="text-center">商品列表</h1>
     <h3 class="text-center">《全品項》</h3>
@@ -33,7 +31,6 @@ getData()
       </div>
     </div>
     <div class="row justify-content-center">
-      <!-- Loop through the products array from the Pinia store -->
       <div v-for="product in productStore.products" :key="product.id" class="col col-md-3 mb-3">
         <CardProduct :product="product" />
       </div>

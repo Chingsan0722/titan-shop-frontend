@@ -1,4 +1,17 @@
-<script>
+<script setup>
+import { watch, ref } from 'vue'
+import { useUserStore } from '../stores/userInfo'
+import { useRouter } from 'vue-router'
+const router = useRouter()
+const users = useUserStore()
+function logOut () {
+  users.logOut()
+  router.push('/')
+}
+const reloadNavbar = ref(false)
+watch(() => users.token, (newValue, oldValue) => {
+  reloadNavbar.value = true
+})
 </script>
 
 <template>
@@ -32,13 +45,17 @@
         </ul>
         <ul class="navbar-nav  flex-wrap bd-navbar-nav py-md-0">
           <li class="nav-item me-3">
-            <a type="button" class="btn btn-outline-primary" href="/cart">
+            <a v-if="users.role === 'user'" type="button" class="btn btn-outline-primary" href="/cart">
               購物車 <span class="badge bg-primary">9</span>
               <span class="visually-hidden">in carts</span>
             </a>
+            <a v-else-if="users.role === 'admin'" type="button" class="btn btn-outline-primary" href="/seller">
+              商家管理
+            </a>
           </li>
           <li class="nav-item">
-            <a class="nav-link text-primary" href="/login" aria-disabled="true">Login</a>
+            <a v-if="users.role === 'admin' || users.role === 'user'" class="nav-link text-primary" href="/" aria-disabled="true" @click="logOut">Logout</a>
+            <a v-else-if="users.role === 'visitor'" class="nav-link text-primary" href="/login" aria-disabled="true">Login</a>
           </li>
         </ul>
         <form class="d-flex ">

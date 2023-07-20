@@ -46,7 +46,7 @@ const login = async () => {
                 <input v-model="users.rememberMe" type="checkbox" class="form-check-input" id="rememberMe">
                 <label class="form-check-label" for="rememberMe">Remember me</label>
               </div>
-              <button type="submit" class="btn btn-primary" @click="login">Login</button>
+              <button type="submit" class="btn btn-primary">Login</button>
             </form>
           </div>
         </div>
