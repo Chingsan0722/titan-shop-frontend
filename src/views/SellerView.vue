@@ -11,7 +11,7 @@ import BtnGroup from '../components/BtnGroup.vue'
       <div class="p-2"><h3>商品清單</h3></div>
       <div class="p-2"><BtnGroup/></div>
       <div class="p-2">
-        <button class="btn btn-dark">新增商品</button>
+        <a class="btn btn-dark" href="/product/new">新增商品</a>
       </div>
     </div>
     <SellerProduct/>

@@ -30,7 +30,7 @@ onMounted(() => {
           <button type="button" class="btn-close" data-bs-dismiss="toast" aria-label="Close"></button>
         </div>
         <div class="toast-body">
-          已登入：主人，歡迎回來
+          主人，歡迎回來
         </div>
       </div>
     </div>
