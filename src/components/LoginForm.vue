@@ -1,13 +1,16 @@
 <script setup>
+import { useUserStore } from '@/stores/userInfo'
 import { signin } from '../api/auth.js'
 import { ref } from 'vue'
-const account = ref('')
-const password = ref('')
+import { useRouter } from 'vue-router'
+
+const users = useUserStore()
 const rememberMe = ref(false)
-const login = async (data) => {
+const router = useRouter()
+const login = async () => {
   const result = await signin({
-    account: account.value,
-    password: password.value
+    account: users.account,
+    password: users.password
   })
   if (result.success) {
     console.log('Login successful')
@@ -15,6 +18,11 @@ const login = async (data) => {
     if (rememberMe.value) {
       localStorage.setItem('authToken', result.token)
     }
+    users.token = result.token
+    users.role = result.data.role
+    users.login = ref(true)
+    console.log(users.login)
+    router.push('/')
   } else {
     console.error('Login failed', result.error)
   }
@@ -32,17 +40,17 @@ const login = async (data) => {
             <form @submit.prevent="login">
               <div class="mb-3">
                 <label for="account" class="form-label">Account</label>
-                <input v-model="account" type="text" class="form-control" id="account" placeholder="Enter your account">
+                <input v-model="users.account" type="text" class="form-control" id="account" placeholder="Enter your account"  autocomplete="account" required>
               </div>
               <div class="mb-3">
                 <label for="password" class="form-label">Password</label>
-                <input v-model="password" type="password" class="form-control" id="password" placeholder="Enter your password">
+                <input v-model="users.password" type="password" class="form-control" id="password" placeholder="Enter your password" autocomplete="password" required>
               </div>
               <div class="mb-3 form-check">
-                <input v-model="rememberMe" type="checkbox" class="form-check-input" id="rememberMe">
+                <input v-model="users.rememberMe" type="checkbox" class="form-check-input" id="rememberMe">
                 <label class="form-check-label" for="rememberMe">Remember me</label>
               </div>
-              <button type="submit" class="btn btn-primary">Login</button>
+              <button type="submit" class="btn btn-primary" @click="login">Login</button>
             </form>
           </div>
         </div>
