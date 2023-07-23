@@ -6,7 +6,8 @@ const route = useRouter()
 const router = useRouter()
 // import axios from 'axios'
 const name = ref('')
-const categoryId = ref('2')
+const categoryId = ref('')
+const categoryName = ref('')
 const description = ref('')
 const price = ref()
 const stock = ref()
@@ -26,9 +27,11 @@ const getProduct = async () => {
       const product = response.data[0]
       name.value = product.name
       categoryId.value = product.categoryId
+      categoryName.value = product.categoryName
       description.value = product.description
       price.value = product.price
       stock.value = product.stock
+      console.log(categoryName.value)
     } else {
       window.alert('Failed to get product', response.error)
     }
@@ -37,6 +40,7 @@ const getProduct = async () => {
   }
 }
 getProduct()
+
 const putData = async () => {
   try {
     const response = await productAPI.updateProduct(id, {
@@ -78,6 +82,17 @@ const deleteProduct = async () => {
       <div class="mb-3">
         <label for="name" class="form-label">商品名稱</label>
         <input v-model="name" type="text" class="form-control" id="name">
+      </div>
+      <div class="input-group mb-3">
+        <label for="categoryName" class="input-group-text">選擇種類</label>
+        <select v-model="categoryId" class="form-select" id="form-select">
+          <option :value=categoryId v-if="categoryId">{{ categoryName }} (selected)</option>
+          <option value="1">上衣類</option>
+          <option value="2">下身類</option>
+          <option value="3">內衣類</option>
+          <option value="4">配件類</option>
+          <option value="5">鞋類</option>
+        </select>
       </div>
       <div class="mb-3">
         <label for="description" class="form-label">商品敘述</label>

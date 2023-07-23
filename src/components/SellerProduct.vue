@@ -27,6 +27,7 @@ const deleteProduct = async () => {
 <template>
   <th class="align-middle" scope="row">{{ product.id }}</th>
   <td class="align-middle">{{ product.name }}</td>
+  <td class="align-middle">{{ product.categoryName }}</td>
   <td class="align-middle">$ {{ product.price }}</td>
   <td class="align-middle">{{ product.description }}</td>
   <td class="align-middle">{{ product.stock }}</td>

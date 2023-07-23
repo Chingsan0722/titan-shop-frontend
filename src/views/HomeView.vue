@@ -3,10 +3,8 @@ import CardProduct from '../components/CardProduct.vue'
 import DropdownMenu from '../components/DropdownMenu.vue'
 import PriceRange from '../components/PriceRange.vue'
 import Pagination from '../components/PaginationComp.vue'
-import { storeToRefs } from 'pinia'
 import { useProductStore } from '@/stores/product'
 import { productAPI } from '../api/product'
-import { useRouter } from 'vue-router'
 const productStore = useProductStore()
 const getData = async () => {
   const result = await productAPI.getAllProducts()

@@ -3,7 +3,7 @@ import { productAPI } from '../api/product'
 import { ref } from 'vue'
 // import axios from 'axios'
 const name = ref('')
-const categoryId = ref('2')
+const categoryId = ref('')
 const description = ref('')
 const price = ref()
 const stock = ref()
@@ -47,7 +47,6 @@ const postData = async () => {
       image.value = null
 
       // Show a success message (You can handle this using a toast or a modal)
-      console.log(response.data)
       window.alert('Product added successfully!')
     } else {
       // Handle the error response from the server (e.g., display an error message)
@@ -66,6 +65,17 @@ const postData = async () => {
         <label for="name" class="form-label">商品名稱</label>
         <input v-model="name" type="text" class="form-control" id="name" placeholder="Enter product name">
       </div>
+      <div class="input-group mb-3">
+        <label for="categoryId" class="input-group-text">選擇種類</label>
+        <select v-model="categoryId" class="form-select" id="form-select">
+          <option :value="null" selected>請選擇</option>
+          <option value="1">上衣類</option>
+          <option value="2">下身類</option>
+          <option value="3">內衣類</option>
+          <option value="4">配件類</option>
+          <option value="5">鞋類</option>
+        </select>
+      </div>
       <div class="mb-3">
         <label for="description" class="form-label">商品敘述</label>
         <textarea v-model="description" class="form-control" id="description" rows="4" placeholder="Enter product description"></textarea>
@@ -83,8 +93,10 @@ const postData = async () => {
         <input type="file" class="form-control" id="image" @change="handleImageChange">
         <img v-if="image" :src="image" alt="Selected Image" style="max-width: 200px;">
       </div>
-      <button type="submit" class="btn btn-primary me-2">確認新增</button>
-      <button type="reset" class="btn btn-danger">清空</button>
+      <div class="mb-3">
+        <button type="submit" class="btn btn-primary me-2">確認新增</button>
+        <button type="reset" class="btn btn-danger">清空</button>
+      </div>
     </form>
   </div>
 </template>

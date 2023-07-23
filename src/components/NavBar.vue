@@ -40,6 +40,7 @@ watch(() => users.token, (newValue, oldValue) => {
               <li><hr class="dropdown-divider"></li>
               <li><a class="dropdown-item" href="#">內衣類</a></li>
               <li><a class="dropdown-item" href="#">配件類</a></li>
+              <li><a class="dropdown-item" href="#">鞋類</a></li>
             </ul>
           </li>
         </ul>

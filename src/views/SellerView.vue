@@ -29,8 +29,9 @@ getData()
     <table class="table table-hover">
       <thead>
         <tr>
-          <th  scope="col">商品編號</th>
+          <th scope="col">商品編號</th>
           <th scope="col">商品名稱</th>
+          <th scope="col">商品分類</th>
           <th scope="col">商品金額</th>
           <th scope="col">商品簡述</th>
           <th scope="col">庫存剩餘</th>
