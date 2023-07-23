@@ -5,6 +5,7 @@ import LoginView from '../views/LoginView.vue'
 import CartView from '../views/CartView.vue'
 import ProductView from '../views/ProductView.vue'
 import CreateProductView from '../views/CreateProductView.vue'
+import UpdateProductView from '../views/UpdateProductView.vue'
 import SellerView from '../views/SellerView.vue'
 import CheckoutView from '../views/CheckoutView.vue'
 const router = createRouter({
@@ -35,6 +36,11 @@ const router = createRouter({
       path: '/cart',
       name: 'cart',
       component: CartView
+    },
+    {
+      path: '/product/edit/:id',
+      name: 'update-product',
+      component: UpdateProductView
     },
     {
       path: '/product/new',
