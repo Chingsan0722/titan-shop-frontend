@@ -19,7 +19,12 @@ export const productAPI = {
   },
   addProduct: async (payload) => {
     try {
-      const { data } = await axiosInstance.post('/products', payload)
+      const { data } = await axios.post(`${baseURL}/products`, payload, {
+        headers: {
+          'Content-Type': 'multipart/form-data',
+          Authorization: `Bearer ${localStorage.getItem('authToken')}`
+        }
+      })
       return { success: true, data }
     } catch (error) {
       return { success: false, error }
@@ -27,7 +32,12 @@ export const productAPI = {
   },
   updateProduct: async (id, payload) => {
     try {
-      const { data } = await axiosInstance.put(`/products/${id}`, payload)
+      const { data } = await axios.put(`${baseURL}/products/${id}`, payload, {
+        headers: {
+          'Content-Type': 'multipart/form-data',
+          Authorization: `Bearer ${localStorage.getItem('authToken')}`
+        }
+      })
       return { success: true, data }
     } catch (error) {
       return { success: false, error }

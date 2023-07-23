@@ -12,13 +12,14 @@ const description = ref('')
 const price = ref()
 const stock = ref()
 const image = ref(null)
+const imagePreview = ref()
 const id = route.currentRoute._value.params.id
 const handleImageChange = (event) => {
   const file = event.target.files[0]
   if (file) {
-    image.value = URL.createObjectURL(file)
+    image.value = file
+    imagePreview.value = URL.createObjectURL(file)
   }
-  console.log(image.value)
 }
 const getProduct = async () => {
   try {
@@ -43,13 +44,14 @@ getProduct()
 
 const putData = async () => {
   try {
-    const response = await productAPI.updateProduct(id, {
-      name: name.value,
-      categoryId: categoryId.value,
-      description: description.value,
-      price: price.value,
-      stock: stock.value
-    })
+    const formData = new FormData()
+    formData.append('name', name.value)
+    formData.append('description', description.value)
+    formData.append('categoryId', categoryId.value)
+    formData.append('price', price.value)
+    formData.append('stock', stock.value)
+    formData.append('image', image.value)
+    const response = await productAPI.updateProduct(id, formData)
     if (response.success) {
       window.alert('Product updated successfully!')
       router.push('/seller')
@@ -109,7 +111,7 @@ const deleteProduct = async () => {
       <div class="mb-3">
         <label for="image" class="form-label">商品圖片</label>
         <input type="file" class="form-control" id="image" @change="handleImageChange">
-        <img v-if="image" :src="image" alt="Selected Image" style="max-width: 200px;">
+        <img v-if="image" :src="imagePreview" alt="Selected Image" style="max-width: 200px;">
       </div>
       <button type="submit" class="btn btn-primary me-2">確認更新</button>
       <button type="reset" class="btn btn-danger" @click="deleteProduct">移除商品</button>

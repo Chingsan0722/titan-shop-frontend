@@ -1,55 +1,36 @@
 <script setup>
 import { productAPI } from '../api/product'
 import { ref } from 'vue'
-// import axios from 'axios'
+import { useRouter } from 'vue-router'
+const router = useRouter()
 const name = ref('')
 const categoryId = ref('')
 const description = ref('')
 const price = ref()
 const stock = ref()
 const image = ref(null)
+const imagePreview = ref()
 const handleImageChange = (event) => {
   const file = event.target.files[0]
   if (file) {
-    image.value = URL.createObjectURL(file)
+    image.value = file
+    imagePreview.value = URL.createObjectURL(file)
   }
-  console.log(image.value)
 }
 const postData = async () => {
   try {
-    // const formData = new FormData()
-    // formData.append('name', name.value)
-    // formData.append('description', description.value)
-    // formData.append('categoryId', categoryId.value)
-    // formData.append('price', price.value)
-    // formData.append('stock', stock.value)
-    // formData.append('image', image.value)
-    const response = await productAPI.addProduct({
-      name: name.value,
-      categoryId: categoryId.value,
-      description: description.value,
-      price: price.value,
-      stock: stock.value
-    })
-    // 上傳圖片失敗
-    // const response = await axios.post('http://localhost:80/api/products', formData, {
-    //   headers: {
-    //     'Content-Type': 'multipart/form-data',
-    //     Authorization: 'Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MiwibmFtZSI6InNlbGxlcjAwMSIsImFjY291bnQiOiJzZWxsZXIwMDEiLCJyb2xlIjoiYWRtaW4iLCJjcmVhdGVkQXQiOiIyMDIzLTA3LTE4VDE1OjEzOjQ3LjAwMFoiLCJ1cGRhdGVkQXQiOiIyMDIzLTA3LTE4VDE1OjEzOjQ3LjAwMFoiLCJpYXQiOjE2ODk4NjAxNjIsImV4cCI6MTY5MDQ2NDk2Mn0.NYqI-DkEMuOqLJn6aebFhqYFiEY8ueJ5v3h4rXV5u_M'
-    //   }
-    // })
+    const formData = new FormData()
+    formData.append('name', name.value)
+    formData.append('description', description.value)
+    formData.append('categoryId', categoryId.value)
+    formData.append('price', price.value)
+    formData.append('stock', stock.value)
+    formData.append('image', image.value)
+    const response = await productAPI.addProduct(formData)
     if (response.success) {
-      // Clear the form after successful submission
-      name.value = ''
-      description.value = ''
-      price.value = 0
-      stock.value = 0
-      image.value = null
-
-      // Show a success message (You can handle this using a toast or a modal)
       window.alert('Product added successfully!')
+      router.push('/seller')
     } else {
-      // Handle the error response from the server (e.g., display an error message)
       window.alert('Failed to add product:', response.error)
     }
   } catch (error) {
@@ -91,7 +72,7 @@ const postData = async () => {
       <div class="mb-3">
         <label for="image" class="form-label">商品圖片</label>
         <input type="file" class="form-control" id="image" @change="handleImageChange">
-        <img v-if="image" :src="image" alt="Selected Image" style="max-width: 200px;">
+        <img v-if="image" :src="imagePreview" alt="Selected Image" style="max-width: 200px;">
       </div>
       <div class="mb-3">
         <button type="submit" class="btn btn-primary me-2">確認新增</button>
