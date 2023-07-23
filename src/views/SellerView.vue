@@ -37,8 +37,9 @@ getData()
           <th scope="col">庫存剩餘</th>
           <th scope="col">歷史銷量</th>
           <th scope="col">銷售額</th>
+          <th scope="col">狀態</th>
           <th scope="col">編輯</th>
-          <th scope="col">下架</th>
+          <th scope="col">移除</th>
         </tr>
       </thead>
       <tbody>

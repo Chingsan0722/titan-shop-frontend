@@ -5,12 +5,12 @@ import { defineStore } from 'pinia'
 // import { ref } from 'vue'
 export const useProductStore = defineStore('products', {
   state: () => ({
-    data: null,
+    product: null,
     products: []
   }),
   actions: {
-    setData (data) {
-      this.data = data
+    setData (product) {
+      this.product = product
     },
     setProducts (products) {
       this.products = products
