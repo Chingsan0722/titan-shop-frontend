@@ -9,12 +9,18 @@ function logOut () {
   router.push('/')
 }
 const reloadNavbar = ref(false)
-watch(() => users.token, (newValue, oldValue) => {
+watch(users.token, (newValue, oldValue) => {
   reloadNavbar.value = true
 })
+// const getCartItem = async () => {
+//   return await users.getCartItems()
+// }
+// getCartItem()
 </script>
 
 <template>
+  <!-- <button class="btn btn-primary" @click="getCartItem">cart</button>
+  <div>{{ users.cartItems }}</div> -->
   <nav class="navbar py-2 navbar-expand-lg navbar-light bg-light">
     <div class="container-fluid">
       <a class="navbar-brand" href="/">

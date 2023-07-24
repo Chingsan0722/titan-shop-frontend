@@ -3,6 +3,7 @@ import { defineStore } from 'pinia'
 // 引入 signin api
 // 先留著
 import { ref } from 'vue'
+import { cartAPI } from '../api/cart'
 export const useUserStore = defineStore('users', {
   state: () => ({
     id: ref(''),
@@ -12,7 +13,8 @@ export const useUserStore = defineStore('users', {
     role: ref('visitor'),
     rememberMe: ref(false),
     login: ref(false),
-    token: ref('')
+    token: ref(''),
+    cartItemsLength: ref([])
   }),
   // could also be defined as
   // state: () => ({ count: 0 })
@@ -38,6 +40,11 @@ export const useUserStore = defineStore('users', {
       this.token = ''
       localStorage.removeItem('authToken')
       localStorage.removeItem('userInfo')
+    },
+    async getCartItems () {
+      const response = await cartAPI.getCart(this.id)
+      if (response) this.cartItemsLength = response.length
+      console.log(response)
     }
   }
 })

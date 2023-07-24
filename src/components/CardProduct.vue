@@ -1,13 +1,17 @@
 <script setup>
-import { ref } from 'vue'
 import { useUserStore } from '../stores/userInfo'
+import { cartAPI } from '../api/cart'
 const users = useUserStore()
 const role = users.role
 // eslint-disable-next-line vue/no-setup-props-destructure
 const { product } = defineProps(['product'])
-const count = ref(1)
-const addCart = () => {
-  count.value++
+const addCart = async () => {
+  const response = await cartAPI.addCart(product.id, { quantity: 1 })
+  if (response) {
+    window.alert('新增成功')
+  } else {
+    window.alert('新增失敗')
+  }
 }
 </script>
 

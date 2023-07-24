@@ -1,47 +1,52 @@
 <script setup>
+import { ref, watch } from 'vue'
+import { cartAPI } from '../api/cart'
+import { useCartStore } from '../stores/cart'
+const cartStore = useCartStore()
+// eslint-disable-next-line vue/no-setup-props-destructure
+const { cart } = defineProps(['cart', 'subtotal'])
+const quantity = ref(cart.quantity)
+watch(quantity, async (newValue, oldValue) => {
+  const responseA = await cartAPI.updateCart(cart.productId, { quantity: newValue })
+  console.log(responseA)
+  if (!responseA) {
+    window.alert('update failed')
+  }
+  const responseB = await cartAPI.getCart()
+  if (responseB) {
+    cartStore.setCarts(responseB)
+  } else {
+    console.error('Get carts failed')
+  }
+})
+const removeCartItem = async () => {
+  if (window.confirm(`確定要移除${cart.productName}嗎？`)) {
+    const responseA = await cartAPI.deleteCart(cart.productId)
+    if (responseA) {
+      window.alert('Delete success!')
+      const responseB = await cartAPI.getCart()
+      if (responseB) {
+        cartStore.setCarts(responseB)
+      } else {
+        console.error('Get carts failed')
+      }
+    } else {
+      window.alert('Delete failed!')
+    }
+  }
+}
 </script>
 <template>
-  <div class="card">
-    <div class="card-body">
-      <table class="table">
-        <thead>
-          <tr>
-            <th scope="col">#</th>
-            <th scope="col">商品名稱</th>
-            <th scope="col">金額</th>
-            <th scope="col">數量</th>
-            <th scope="col">小計</th>
-            <th scope="col">刪除</th>
-          </tr>
-        </thead>
-        <tbody>
-          <tr>
-            <th scope="row">1</th>
-            <td>Product 1</td>
-            <td>$10</td>
-            <td>
-              <input type="number" class="form-control" value="1" min="1">
-            </td>
-            <td>$10</td>
-            <td>
-              <button class="btn btn-danger btn-sm">移除商品</button>
-            </td>
-          </tr>
-          <tr>
-            <th scope="row">2</th>
-            <td>Product 2</td>
-            <td>$15</td>
-            <td>
-              <input type="number" class="form-control" value="2" min="1">
-            </td>
-            <td>$30</td>
-            <td>
-              <button class="btn btn-danger btn-sm">移除商品</button>
-            </td>
-          </tr>
-          <!-- 添加其他商品行 -->
-        </tbody>
-      </table>
-    </div>
-  </div>
+  <tr>
+    <td>{{cart.categoryName}}</td>
+    <td>{{ cart.productName }}</td>
+    <td>${{ cart.price }}</td>
+    <td>
+      <input type="number" class="form-control" v-model="quantity" :placeholder="quantity" min="1">
+    </td>
+    <td>${{ cart.subTotal }}</td>
+    <td>
+      <button class="btn btn-danger btn-sm" @click="removeCartItem(cart.id)">移除</button>
+    </td>
+  </tr>
 </template>

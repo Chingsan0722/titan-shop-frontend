@@ -5,13 +5,18 @@ import { defineStore } from 'pinia'
 import { ref } from 'vue'
 export const useCartStore = defineStore('carts', {
   state: () => ({
-    data: ref([])
+    carts: ref([]),
+    totalAmount: ref(0)
   }),
   // could also be defined as
   // state: () => ({ count: 0 })
   actions: {
-    // increment () {
-    //   this.count++
-    // }
+    setCarts (carts) {
+      this.carts = carts
+      this.getTotalAmount()
+    },
+    getTotalAmount () {
+      this.totalAmount = this.carts.reduce((total, cart) => total + (cart.quantity * cart.price), 0)
+    }
   }
 })
