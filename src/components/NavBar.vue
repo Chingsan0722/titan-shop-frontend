@@ -1,11 +1,13 @@
 <script setup>
-import { watch, ref } from 'vue'
+// import { watch, ref } from 'vue'
 import { useUserStore } from '../stores/userInfo'
+import { useProductStore } from '../stores/product'
 import { useRouter } from 'vue-router'
 const router = useRouter()
-const users = useUserStore()
+const productStore = useProductStore()
+const userStore = useUserStore()
 function logOut () {
-  users.logOut()
+  userStore.logOut()
   router.push('/')
 }
 function loginPage () {
@@ -17,19 +19,12 @@ function cartPage () {
 function sellerPage () {
   router.push('/seller')
 }
-const reloadNavbar = ref(false)
-watch(users.token, (newValue, oldValue) => {
-  reloadNavbar.value = true
-})
-// const getCartItem = async () => {
-//   return await users.getCartItems()
-// }
-// getCartItem()
+function switchCategory (categoryId) {
+  productStore.categorySwitch = categoryId
+}
 </script>
 
 <template>
-  <!-- <button class="btn btn-primary" @click="getCartItem">cart</button>
-  <div>{{ users.cartItems }}</div> -->
   <nav class="navbar py-2 navbar-expand-lg navbar-light bg-light">
     <div class="container-fluid">
       <a class="navbar-brand" href="/">
@@ -50,28 +45,28 @@ watch(users.token, (newValue, oldValue) => {
               種類
             </a>
             <ul class="dropdown-menu" aria-labelledby="navbarDropdown">
-              <li><a class="dropdown-item" href="#">上衣類</a></li>
-              <li><a class="dropdown-item" href="#">下身類</a></li>
+              <li><a class="dropdown-item" href="#" @click="switchCategory(1)">上衣類</a></li>
+              <li><a class="dropdown-item" href="#" @click="switchCategory(2)">下身類</a></li>
               <li><hr class="dropdown-divider"></li>
-              <li><a class="dropdown-item" href="#">內衣類</a></li>
-              <li><a class="dropdown-item" href="#">配件類</a></li>
-              <li><a class="dropdown-item" href="#">鞋類</a></li>
+              <li><a class="dropdown-item" href="#" @click="switchCategory(3)">內衣類</a></li>
+              <li><a class="dropdown-item" href="#" @click="switchCategory(4)">配件類</a></li>
+              <li><a class="dropdown-item" href="#" @click="switchCategory(5)">鞋類</a></li>
             </ul>
           </li>
         </ul>
         <ul class="navbar-nav  flex-wrap bd-navbar-nav py-md-0">
           <li class="nav-item me-3">
-            <a v-if="users.role === 'user'" type="button" class="btn btn-outline-primary" href="" @click="cartPage">
+            <a v-if="userStore.role === 'user'" type="button" class="btn btn-outline-primary" href="" @click="cartPage">
               購物車 <span class="badge bg-primary">0</span>
               <span class="visually-hidden">in carts</span>
             </a>
-            <a v-else-if="users.role === 'admin'" type="button" class="btn btn-outline-primary" href="" @click="sellerPage">
+            <a v-else-if="userStore.role === 'admin'" type="button" class="btn btn-outline-primary" href="" @click="sellerPage">
               商家管理
             </a>
           </li>
           <li class="nav-item">
-            <a v-if="users.role === 'admin' || users.role === 'user'" class="nav-link text-primary" href="" aria-disabled="true" @click="logOut">Logout</a>
-            <a v-else-if="users.role === 'visitor'" class="nav-link text-primary" aria-disabled="true" href="" @click="loginPage">Login</a>
+            <a v-if="userStore.role === 'admin' || userStore.role === 'user'" class="nav-link text-primary" href="" aria-disabled="true" @click="logOut">Logout</a>
+            <a v-else-if="userStore.role === 'visitor'" class="nav-link text-primary" aria-disabled="true" href="" @click="loginPage">Login</a>
           </li>
         </ul>
         <form class="d-flex ">

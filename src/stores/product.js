@@ -6,7 +6,8 @@ import { ref } from 'vue'
 export const useProductStore = defineStore('products', {
   state: () => ({
     product: ref(null),
-    products: ref([])
+    products: ref([]),
+    categorySwitch: ref(null)
   }),
   actions: {
     setData (product) {

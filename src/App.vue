@@ -4,9 +4,8 @@ import { RouterView } from 'vue-router'
 // import { ref, watch } from 'vue'
 import LoginNotify from './components/LoginNotify.vue'
 import NavBar from './components/NavBar.vue'
-import { useUserStore } from './stores/userInfo'
-const users = useUserStore()
-console.log(users.role)
+// import { useUserStore } from './stores/userInfo'
+// const users = useUserStore()
 </script>
 
 <template>

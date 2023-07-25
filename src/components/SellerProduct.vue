@@ -37,7 +37,6 @@ const deleteProduct = async () => {
 }
 const changeAvailable = async () => {
   const isAvailable = !product.available
-  console.log(isAvailable)
   const response = await productAPI.updateProduct(product.id, { available: isAvailable })
   if (response.success) {
     window.alert('已更改')

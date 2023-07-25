@@ -8,7 +8,6 @@ const { cart } = defineProps(['cart', 'subtotal'])
 const quantity = ref(cart.quantity)
 watch(quantity, async (newValue, oldValue) => {
   const responseA = await cartAPI.updateCart(cart.productId, { quantity: newValue })
-  console.log(responseA)
   if (!responseA) {
     window.alert('update failed')
   }

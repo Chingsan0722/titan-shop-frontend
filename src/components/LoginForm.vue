@@ -15,7 +15,6 @@ const login = async () => {
       password: users.password
     })
     if (result.success) {
-      console.log('Login successful')
       localStorage.setItem('authToken', result.token)
       localStorage.setItem('userInfo', JSON.stringify(result.data))
       users.token = result.token

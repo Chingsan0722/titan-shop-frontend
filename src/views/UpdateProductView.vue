@@ -32,7 +32,6 @@ const getProduct = async () => {
       description.value = product.description
       price.value = product.price
       stock.value = product.stock
-      console.log(categoryName.value)
     } else {
       window.alert('Failed to get product', response.error)
     }

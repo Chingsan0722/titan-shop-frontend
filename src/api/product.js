@@ -9,8 +9,12 @@ export const productAPI = {
       return { success: false, error }
     }
   },
-  getAllProducts: async () => {
+  getAllProducts: async (categoryId) => {
     try {
+      if (categoryId) {
+        const { data } = await axios.get(`${baseURL}/products?categoryId=${categoryId}`)
+        return { success: true, data }
+      }
       const { data } = await axios.get(`${baseURL}/products`)
       return { success: true, data }
     } catch (error) {

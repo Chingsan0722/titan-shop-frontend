@@ -17,7 +17,6 @@ const postOrder = async () => {
       const response = await orderAPI.addToOrder()
       if (response) {
         orderStore.setOrderId(response[0].orderId)
-        // console.log(orderStore.orderId)
         window.alert('訂購成功!')
         router.push('/checkout')
       } else {

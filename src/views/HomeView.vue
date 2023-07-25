@@ -1,4 +1,5 @@
 <script setup>
+import { watch } from 'vue'
 import CardProduct from '../components/CardProduct.vue'
 import DropdownMenu from '../components/DropdownMenu.vue'
 import PriceRange from '../components/PriceRange.vue'
@@ -6,8 +7,13 @@ import Pagination from '../components/PaginationComp.vue'
 import { useProductStore } from '@/stores/product'
 import { productAPI } from '../api/product'
 const productStore = useProductStore()
-const getData = async () => {
-  const result = await productAPI.getAllProducts()
+const getData = async (categoryId) => {
+  let result
+  if (categoryId) {
+    result = await productAPI.getAllProducts(categoryId)
+  } else {
+    result = await productAPI.getAllProducts()
+  }
   if (result) {
     productStore.setProducts(result.data)
   } else {
@@ -15,9 +21,14 @@ const getData = async () => {
   }
 }
 getData()
+watch(() => productStore.categorySwitch, (newValue) => {
+  getData(newValue)
+})
+
 </script>
 <template>
   <div class="container mt-2">
+    <div>{{productStore.categorySwitch}}</div>
     <h1 class="text-center">商品列表</h1>
     <h3 class="text-center">《全品項》</h3>
     <div class="d-flex justify-content-md-end">

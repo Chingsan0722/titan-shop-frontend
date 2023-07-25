@@ -44,7 +44,6 @@ export const useUserStore = defineStore('users', {
     async getCartItems () {
       const response = await cartAPI.getCart(this.id)
       if (response) this.cartItemsLength = response.length
-      console.log(response)
     }
   }
 })

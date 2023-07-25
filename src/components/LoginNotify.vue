@@ -4,11 +4,9 @@ import { onMounted, watch, nextTick } from 'vue'
 import { useUserStore } from '@/stores/userInfo'
 
 const users = useUserStore()
-console.log(users.name)
 onMounted(() => {
   watch(users, async () => {
     if (users.role === 'user' || users.role === 'admin') {
-      console.log(users.role)
       await nextTick(() => {
         const toastElement = document.getElementById('login')
         // eslint-disable-next-line no-undef

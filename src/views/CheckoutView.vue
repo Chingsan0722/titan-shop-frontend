@@ -7,7 +7,6 @@ import OrderItems from '../components/OrderItems.vue'
 const userStore = useUserStore()
 const orderStore = useOrderStore()
 const totalAmount = ref()
-console.log(orderStore.orderId)
 const getOrders = async () => {
   const response = await orderAPI.getOrder(orderStore.orderId)
   if (response) {
