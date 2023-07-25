@@ -1,5 +1,6 @@
 import axios from 'axios'
-export const baseURL = 'http://localhost:80/api'
+// export const baseURL = 'http://localhost:80/api'
+export const baseURL = 'https://titan-shop-api.onrender.com/api'
 export const axiosInstance = axios.create({ baseURL })
 
 // request 攔截器
