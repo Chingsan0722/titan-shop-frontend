@@ -6,21 +6,29 @@ import { useRouter } from 'vue-router'
 
 const users = useUserStore()
 const router = useRouter()
+const isLoading = ref(false)
 const login = async () => {
-  const result = await signin({
-    account: users.account,
-    password: users.password
-  })
-  if (result.success) {
-    console.log('Login successful')
-    localStorage.setItem('authToken', result.token)
-    localStorage.setItem('userInfo', JSON.stringify(result.data))
-    users.token = result.token
-    users.role = result.data.role
-    users.login = ref(true)
-    router.push('/')
-  } else {
-    console.error('Login failed', result.error)
+  isLoading.value = true
+  try {
+    const result = await signin({
+      account: users.account,
+      password: users.password
+    })
+    if (result.success) {
+      console.log('Login successful')
+      localStorage.setItem('authToken', result.token)
+      localStorage.setItem('userInfo', JSON.stringify(result.data))
+      users.token = result.token
+      users.role = result.data.role
+      users.login = ref(true)
+      router.push('/')
+    } else {
+      console.error('Login failed', result.error)
+    }
+  } catch (error) {
+    console.error(error)
+  } finally {
+    isLoading.value = false
   }
 }
 
@@ -46,7 +54,9 @@ const login = async () => {
                 <input v-model="users.rememberMe" type="checkbox" class="form-check-input" id="rememberMe">
                 <label class="form-check-label" for="rememberMe">Remember me</label>
               </div>
-              <button type="submit" class="btn btn-primary">Login</button>
+              <button :disabled="isLoading" type="submit" class="btn btn-primary">
+                <span v-if="isLoading" class="spinner-border spinner-border-sm"></span>
+                Login</button>
             </form>
           </div>
         </div>

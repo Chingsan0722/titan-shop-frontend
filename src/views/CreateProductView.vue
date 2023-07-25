@@ -10,6 +10,7 @@ const price = ref()
 const stock = ref()
 const image = ref(null)
 const imagePreview = ref()
+const isLoading = ref(false)
 const handleImageChange = (event) => {
   const file = event.target.files[0]
   if (file) {
@@ -19,6 +20,7 @@ const handleImageChange = (event) => {
 }
 const postData = async () => {
   try {
+    isLoading.value = true
     const formData = new FormData()
     formData.append('name', name.value)
     formData.append('description', description.value)
@@ -35,6 +37,8 @@ const postData = async () => {
     }
   } catch (error) {
     console.error(error)
+  } finally {
+    isLoading.value = false
   }
 }
 </script>
@@ -72,10 +76,12 @@ const postData = async () => {
       <div class="mb-3">
         <label for="image" class="form-label">商品圖片</label>
         <input type="file" class="form-control" id="image" @change="handleImageChange">
-        <img v-if="image" :src="imagePreview" alt="Selected Image" style="max-width: 200px;">
+        <img class="pt-3" v-if="image" :src="imagePreview" alt="Selected Image" style="max-width: 200px;">
       </div>
       <div class="mb-3">
-        <button type="submit" class="btn btn-primary me-2">確認新增</button>
+        <button :disabled="isLoading" type="submit" class="btn btn-primary me-2">
+          <span v-if="isLoading" class="spinner-border spinner-border-sm"></span>
+          確認新增</button>
         <button type="reset" class="btn btn-danger">清空</button>
       </div>
     </form>
