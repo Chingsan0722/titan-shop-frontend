@@ -1,8 +1,13 @@
 <script setup>
 import { storeToRefs } from 'pinia'
+import { ref } from 'vue'
+import { useCartStore } from '@/stores/cart'
 import { useProductStore } from '@/stores/product'
 import { useRouter } from 'vue-router'
 import { productAPI } from '../api/product'
+import { cartAPI } from '../api/cart'
+const isLoading = ref(false)
+const cartStore = useCartStore()
 const productStore = useProductStore()
 const { product } = storeToRefs(productStore)
 const route = useRouter()
@@ -16,6 +21,20 @@ const getData = async () => {
   }
 }
 getData()
+
+const addCart = async () => {
+  try {
+    isLoading.value = true
+    await cartAPI.addCart(id, { quantity: 1 })
+    const carts = await cartAPI.getCart()
+    if (carts) cartStore.carts = carts
+    window.alert('新增成功')
+  } catch (error) {
+    window.alert('庫存不足')
+  } finally {
+    isLoading.value = false
+  }
+}
 </script>
 <template>
   <div class="container mt-5">
@@ -31,7 +50,9 @@ getData()
         <h3>NTD $ {{ product ? product.price : '0' }}</h3>
         <h5>庫存: {{ product ? product.stock : '0' }}</h5>
         <h5>已售出: {{ product ? product.totalSold : '0' }}</h5>
-        <button class="btn btn-primary">Add to Cart</button>
+        <button :disabled="isLoading" class="btn btn-primary" @click="addCart">
+          <span v-if="isLoading" class="spinner-border spinner-border-sm"></span>
+          Add to Cart</button>
       </div>
     </div>
   </div>

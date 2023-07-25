@@ -6,6 +6,7 @@ import { ref } from 'vue'
 export const useCartStore = defineStore('carts', {
   state: () => ({
     carts: ref([]),
+    inCart: ref(0),
     totalAmount: ref(0)
   }),
   // could also be defined as

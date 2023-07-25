@@ -1,9 +1,12 @@
 <script setup>
-// import { watch, ref } from 'vue'
+import { watch } from 'vue'
 import { useUserStore } from '../stores/userInfo'
 import { useProductStore } from '../stores/product'
+import { useCartStore } from '../stores/cart'
 import { useRouter } from 'vue-router'
+import { cartAPI } from '../api/cart'
 const router = useRouter()
+const cartStore = useCartStore()
 const productStore = useProductStore()
 const userStore = useUserStore()
 function logOut () {
@@ -22,6 +25,14 @@ function sellerPage () {
 function switchCategory (categoryId) {
   productStore.categorySwitch = categoryId
 }
+const getCarts = async () => {
+  const carts = await cartAPI.getCart()
+  if (carts) cartStore.carts = carts
+}
+getCarts()
+watch(() => cartStore.carts, () => {
+  cartStore.inCart = cartStore.carts.length
+})
 </script>
 
 <template>
@@ -57,7 +68,7 @@ function switchCategory (categoryId) {
         <ul class="navbar-nav  flex-wrap bd-navbar-nav py-md-0">
           <li class="nav-item me-3">
             <a v-if="userStore.role === 'user'" type="button" class="btn btn-outline-primary" href="" @click="cartPage">
-              購物車 <span class="badge bg-primary">0</span>
+              購物車 <span class="badge bg-primary">{{ cartStore.inCart }}</span>
               <span class="visually-hidden">in carts</span>
             </a>
             <a v-else-if="userStore.role === 'admin'" type="button" class="btn btn-outline-primary" href="" @click="sellerPage">
