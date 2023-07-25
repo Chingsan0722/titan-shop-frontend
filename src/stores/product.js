@@ -8,7 +8,7 @@ export const useProductStore = defineStore('products', {
     product: ref(null),
     products: ref([]),
     categorySwitch: ref(null),
-    sort: ref(null)
+    sort: ref('default')
   }),
   actions: {
     setData (product) {

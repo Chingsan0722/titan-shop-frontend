@@ -49,10 +49,46 @@ getData()
 watch(() => productStore.categorySwitch, (newValue) => {
   getData(newValue)
 })
+// sort product
+watch(() => productStore.sort, (newValue) => {
+  switch (newValue) {
+    case 'default': {
+      productStore.setProducts(productStore.products)
+      break
+    }
+    case 'hot': {
+      const hotSortedProducts = [...productStore.products].sort((a, b) => {
+        return b.totalSold - a.totalSold
+      })
+      productStore.setProducts(hotSortedProducts)
+      break
+    }
+    case 'new': {
+      const newSortedProducts = [...productStore.products].sort((a, b) => {
+        return new Date(b.created_at) - new Date(a.created_at)
+      })
+      productStore.setProducts(newSortedProducts)
+      break
+    }
+    case 'high': {
+      const highToLowSortedProducts = [...productStore.products].sort((a, b) => b.price - a.price)
+      productStore.setProducts(highToLowSortedProducts)
+      break
+    }
+    case 'low': {
+      const lowToHighSortedProducts = [...productStore.products].sort((a, b) => a.price - b.price)
+      productStore.setProducts(lowToHighSortedProducts)
+      break
+    }
+    default: {
+      productStore.setProducts(productStore.products)
+      break
+    }
+  }
+})
 </script>
 <template>
   <div class="container mt-2">
-    <div>{{productStore.categorySwitch}}</div>
     <h1 class="text-center">商品列表</h1>
     <div class="d-flex justify-content-between">
       <div class="p-2 d-flex">
