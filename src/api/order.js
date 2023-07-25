@@ -6,7 +6,7 @@ export const orderAPI = {
     return data
   },
   getOrder: async (id) => {
-    const { data } = await axiosInstance.get(`/orders/users/${id}`)
+    const { data } = await axiosInstance.get(`/orders/${id}`)
     return data
   },
   deleteOrder: async (id) => {

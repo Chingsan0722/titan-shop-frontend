@@ -5,13 +5,17 @@ import { defineStore } from 'pinia'
 import { ref } from 'vue'
 export const useOrderStore = defineStore('orders', {
   state: () => ({
-    data: ref([])
+    orders: ref([]),
+    orderId: ref()
   }),
   // could also be defined as
   // state: () => ({ count: 0 })
   actions: {
-    // increment () {
-    //   this.count++
-    // }
+    setOrders (orders) {
+      this.orders = orders
+    },
+    setOrderId (orderId) {
+      this.orderId = orderId
+    }
   }
 })
