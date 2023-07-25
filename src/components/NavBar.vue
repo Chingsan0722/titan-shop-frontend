@@ -69,10 +69,6 @@ function switchCategory (categoryId) {
             <a v-else-if="userStore.role === 'visitor'" class="nav-link text-primary" aria-disabled="true" href="" @click="loginPage">Login</a>
           </li>
         </ul>
-        <form class="d-flex ">
-          <input class="form-control me-2" type="search" placeholder="Search" aria-label="Search">
-          <button class="btn btn-outline-success" type="submit">Search</button>
-        </form>
       </div>
     </div>
   </nav>

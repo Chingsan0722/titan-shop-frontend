@@ -1,18 +1,18 @@
 <script>
+// import { useProductStore } from '../stores/product'
+// const productStore = useProductStore()
+// function sortWith (sort) {
+//   productStore.sort = sort
+// }
 </script>
 <template>
-  <div class="btn-group">
-    <button type="button" class="btn btn-danger dropdown-toggle" data-bs-toggle="dropdown" aria-expanded="false">
-      預設排序
-    </button>
-    <ul class="dropdown-menu">
-      <li><a class="dropdown-item" href="#">預設排序</a></li>
-      <li><a class="dropdown-item" href="#">最熱銷在前</a></li>
-      <li><a class="dropdown-item" href="#">最新上架在前</a></li>
-      <li><a class="dropdown-item" href="#">金額 高 -> 低</a></li>
-      <li><a class="dropdown-item" href="#">金額 低 -> 高</a></li>
-    </ul>
-  </div>
+  <select class="form-select">
+    <option value="default" selected>預設排序</option>
+    <option value="hot">最熱銷在前</option>
+    <option value="new">最新上架在前</option>
+    <option value="high">金額 高 -> 低</option>
+    <option value="low">金額 低 -> 高</option>
+  </select>
 </template>
 
 <style>

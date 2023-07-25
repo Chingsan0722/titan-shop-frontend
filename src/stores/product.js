@@ -7,7 +7,8 @@ export const useProductStore = defineStore('products', {
   state: () => ({
     product: ref(null),
     products: ref([]),
-    categorySwitch: ref(null)
+    categorySwitch: ref(null),
+    sort: ref(null)
   }),
   actions: {
     setData (product) {
