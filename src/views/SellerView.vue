@@ -3,6 +3,8 @@ import SellerProduct from '../components/SellerProduct.vue'
 import BtnGroup from '../components/BtnGroup.vue'
 import { useProductStore } from '../stores/product'
 import { productAPI } from '../api/product'
+import { useRouter } from 'vue-router'
+const router = useRouter()
 const productStore = useProductStore()
 const getData = async () => {
   const result = await productAPI.getAllProducts()
@@ -13,6 +15,9 @@ const getData = async () => {
   }
 }
 getData()
+function newProductPage () {
+  router.push('/product/new')
+}
 </script>
 <template>
   <div class="container mt-5">
@@ -23,7 +28,7 @@ getData()
       <div class="p-2"><h3>商品清單</h3></div>
       <div class="p-2"><BtnGroup/></div>
       <div class="p-2">
-        <a class="btn btn-dark" href="/product/new">新增商品</a>
+        <a class="btn btn-dark" href="" @click="newProductPage">新增商品</a>
       </div>
     </div>
     <table class="table table-hover">

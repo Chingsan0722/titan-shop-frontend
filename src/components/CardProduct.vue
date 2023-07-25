@@ -6,11 +6,11 @@ const role = users.role
 // eslint-disable-next-line vue/no-setup-props-destructure
 const { product } = defineProps(['product'])
 const addCart = async () => {
-  const response = await cartAPI.addCart(product.id, { quantity: 1 })
-  if (response) {
+  try {
+    await cartAPI.addCart(product.id, { quantity: 1 })
     window.alert('新增成功')
-  } else {
-    window.alert('新增失敗')
+  } catch (error) {
+    window.alert('庫存不足')
   }
 }
 </script>

@@ -8,6 +8,15 @@ function logOut () {
   users.logOut()
   router.push('/')
 }
+function loginPage () {
+  router.push('/login')
+}
+function cartPage () {
+  router.push('/cart')
+}
+function sellerPage () {
+  router.push('/seller')
+}
 const reloadNavbar = ref(false)
 watch(users.token, (newValue, oldValue) => {
   reloadNavbar.value = true
@@ -52,17 +61,17 @@ watch(users.token, (newValue, oldValue) => {
         </ul>
         <ul class="navbar-nav  flex-wrap bd-navbar-nav py-md-0">
           <li class="nav-item me-3">
-            <a v-if="users.role === 'user'" type="button" class="btn btn-outline-primary" href="/cart">
-              購物車 <span class="badge bg-primary">9</span>
+            <a v-if="users.role === 'user'" type="button" class="btn btn-outline-primary" href="" @click="cartPage">
+              購物車 <span class="badge bg-primary">0</span>
               <span class="visually-hidden">in carts</span>
             </a>
-            <a v-else-if="users.role === 'admin'" type="button" class="btn btn-outline-primary" href="/seller">
+            <a v-else-if="users.role === 'admin'" type="button" class="btn btn-outline-primary" href="" @click="sellerPage">
               商家管理
             </a>
           </li>
           <li class="nav-item">
-            <a v-if="users.role === 'admin' || users.role === 'user'" class="nav-link text-primary" href="/" aria-disabled="true" @click="logOut">Logout</a>
-            <a v-else-if="users.role === 'visitor'" class="nav-link text-primary" href="/login" aria-disabled="true">Login</a>
+            <a v-if="users.role === 'admin' || users.role === 'user'" class="nav-link text-primary" href="" aria-disabled="true" @click="logOut">Logout</a>
+            <a v-else-if="users.role === 'visitor'" class="nav-link text-primary" aria-disabled="true" href="" @click="loginPage">Login</a>
           </li>
         </ul>
         <form class="d-flex ">
