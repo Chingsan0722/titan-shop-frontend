@@ -50,7 +50,7 @@ watch(() => productStore.categorySwitch, (newValue) => {
   getData(newValue)
 })
 // sort product
-watch(() => productStore.sort, (newValue) => {
+watch(() => productStore.homeSort, (newValue) => {
   switch (newValue) {
     case 'default': {
       productStore.setProducts(productStore.products)

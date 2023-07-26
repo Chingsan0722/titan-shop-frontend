@@ -1,4 +1,5 @@
 <script setup>
+import { watch } from 'vue'
 import SellerProduct from '../components/SellerProduct.vue'
 import BtnGroup from '../components/BtnGroup.vue'
 import { useProductStore } from '../stores/product'
@@ -18,6 +19,45 @@ getData()
 function newProductPage () {
   router.push('/product/new')
 }
+watch(() => productStore.sellerSort, (newValue) => {
+  switch (newValue) {
+    case 'default': {
+      const defaultProducts = [...productStore.products].sort((a, b) => {
+        return a.id - b.id
+      })
+      productStore.setProducts(defaultProducts)
+      break
+    }
+    case 'totalAmount' : {
+      const totalAmountProducts = [...productStore.products].sort((a, b) => {
+        return (b.totalSold * b.price) - (a.totalSold * a.price)
+      })
+      productStore.setProducts(totalAmountProducts)
+      break
+    }
+    case 'totalSold' : {
+      const totalSoldProducts = [...productStore.products].sort((a, b) => {
+        return b.totalSold - a.totalSold
+      })
+      productStore.setProducts(totalSoldProducts)
+      break
+    }
+    case 'stockLeft' : {
+      const stockLeftProducts = [...productStore.products].sort((a, b) => {
+        return b.stock - a.stock
+      })
+      productStore.setProducts(stockLeftProducts)
+      break
+    }
+    default: {
+      const defaultProducts = [...productStore.products].sort((a, b) => {
+        return b.id - a.id
+      })
+      productStore.setProducts(defaultProducts)
+      break
+    }
+  }
+})
 </script>
 <template>
   <div class="container mt-5">

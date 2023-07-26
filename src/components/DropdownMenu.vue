@@ -3,7 +3,7 @@ import { useProductStore } from '../stores/product'
 const productStore = useProductStore()
 </script>
 <template>
-  <select class="form-select" v-model="productStore.sort">
+  <select class="form-select" v-model="productStore.homeSort">
     <option value="default" selected>預設排序</option>
     <option value="hot">最熱銷在前</option>
     <option value="new">最新上架在前</option>
