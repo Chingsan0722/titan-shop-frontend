@@ -1,22 +1,12 @@
 <script setup>
+import { watch } from 'vue'
 import { useProductStore } from '../stores/product'
 import { productAPI } from '../api/product'
-// import { storeToRefs } from 'pinia'/
-
 const productStore = useProductStore()
-// const { product } = storeToRefs(productStore)
 
 // eslint-disable-next-line vue/no-setup-props-destructure
 const { product } = defineProps(['product'])
-// const getData = async () => {
-//   const result = await productAPI.getProduct(id)
-//   if (result.success) {
-//     productStore.setData(result.data[0])
-//   } else {
-//     console.error('Get product failed', result.error)
-//   }
-// }
-// getData()
+const reactProduct = productStore.products.find((item) => item.id === product.id)
 const deleteProduct = async () => {
   try {
     if (window.confirm('確定要移除商品嗎？')) {
@@ -36,15 +26,26 @@ const deleteProduct = async () => {
   }
 }
 const changeAvailable = async () => {
-  const isAvailable = !product.available
-  const response = await productAPI.updateProduct(product.id, { available: isAvailable })
+  if (product.available) {
+    window.confirm('確定要更改為下架嗎')
+  } else {
+    window.confirm('確定要更改為上架嗎')
+  }
+  const isAvailable = product.available
+  const response = await productAPI.updateProduct(product.id, { available: !isAvailable })
   if (response.success) {
+    const responseB = await productAPI.getAllProducts()
+    if (responseB.success) productStore.setProducts(responseB.data)
     window.alert('已更改')
   } else {
     window.alert('失敗')
   }
 }
 
+watch(() => productStore.products, (newValue) => {
+  const newProd = newValue.find((product) => product.id === reactProduct.id)
+  reactProduct.available = newProd.available
+})
 </script>
 <template>
   <th class="align-middle" scope="row">{{ product.id }}</th>
@@ -53,11 +54,11 @@ const changeAvailable = async () => {
   <td class="align-middle">$ {{ product.price }}</td>
   <td class="align-middle">{{ product.description }}</td>
   <td class="align-middle">{{ product.stock }}</td>
-  <td class="align-middle">{{ product.total_sold || 0 }}</td>
-  <td class="align-middle">{{ product.total_sold * product.price || 0 }}</td>
+  <td class="align-middle">{{ product.totalSold || 0 }}</td>
+  <td class="align-middle">{{ product.totalSold * product.price || 0 }}</td>
   <td class="align-middle">
-    <button v-if="product.available" class="btn btn-info" @click="changeAvailable">上架中</button>
-    <button v-else class="btn btn-info" @click="changeAvailable">已下架</button>
+    <button v-if="reactProduct.available" class="btn btn-info" @click="changeAvailable">上架中</button>
+    <button v-else class="btn btn-secondary" @click="changeAvailable">已下架</button>
   </td>
   <td><router-link :to="`/product/edit/${product.id}`">
     <a class="btn btn-primary">編輯</a></router-link></td>

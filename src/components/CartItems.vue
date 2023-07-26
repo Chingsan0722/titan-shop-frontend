@@ -12,7 +12,6 @@ watch(quantity, async (newValue, oldValue) => {
   isLoading.value = true
   try {
     const responseA = await cartAPI.updateCart(cart.productId, { quantity: newValue })
-    console.log(responseA)
     if (!responseA.success) {
       window.alert('庫存不足')
     }

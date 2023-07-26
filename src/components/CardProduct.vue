@@ -2,7 +2,10 @@
 import { ref } from 'vue'
 import { useUserStore } from '../stores/userInfo'
 import { useCartStore } from '../stores/cart'
+import { useProductStore } from '../stores/product'
 import { cartAPI } from '../api/cart'
+import { productAPI } from '../api/product'
+const productStore = useProductStore()
 const cartStore = useCartStore()
 const users = useUserStore()
 const role = users.role
@@ -18,6 +21,27 @@ const addCart = async () => {
     window.alert('新增成功')
   } catch (error) {
     window.alert('庫存不足')
+  } finally {
+    isLoading.value = false
+  }
+}
+const offProduct = async () => {
+  try {
+    isLoading.value = true
+    const formData = new FormData()
+    formData.append('available', false)
+    const responseA = await productAPI.updateProduct(product.id, formData)
+    if (responseA.success) {
+      window.alert(`已下架商品：${product.name}`)
+      const responseB = await productAPI.getAllProducts()
+      if (responseB.success) {
+        productStore.setProducts(responseB.data.filter((product) => product.available === 1))
+      }
+    } else {
+      window.alert('下架失敗，請稍後再試')
+    }
+  } catch (error) {
+    console.error(error)
   } finally {
     isLoading.value = false
   }
@@ -38,7 +62,9 @@ const addCart = async () => {
         <button v-if="role === 'user'" :disabled="isLoading" class="btn btn-primary" @click="addCart">
           <span v-if="isLoading" class="spinner-border spinner-border-sm"></span>
           加到購物車</button>
-        <button v-else-if="role === 'admin'" class="btn btn-warning" @click="addCart">下架商品</button>
+        <button v-else-if="role === 'admin'" :disabled="isLoading" class="btn btn-warning" @click="offProduct">
+          <span v-if="isLoading" class="spinner-border spinner-border-sm"></span>
+          下架商品</button>
       </div>
     </div>
   </div>

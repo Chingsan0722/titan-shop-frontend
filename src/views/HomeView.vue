@@ -38,7 +38,8 @@ const getData = async (categoryId) => {
     result = await productAPI.getAllProducts()
   }
   if (result) {
-    productStore.setProducts(result.data)
+    result = result.data.filter((product) => product.available === 1)
+    productStore.setProducts(result)
   } else {
     console.error('Get products failed', result.error)
   }
