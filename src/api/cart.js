@@ -10,8 +10,12 @@ export const cartAPI = {
     return data
   },
   updateCart: async (id, payload) => {
-    const { data } = await axiosInstance.put(`/carts/products/${id}`, payload)
-    return data
+    try {
+      const { data } = await axiosInstance.put(`/carts/products/${id}`, payload)
+      return { success: true, data }
+    } catch (error) {
+      return { success: false, error }
+    }
   },
   deleteCart: async (id) => {
     const { data } = await axiosInstance.delete(`/carts/products/${id}`)

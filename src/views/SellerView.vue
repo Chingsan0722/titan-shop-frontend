@@ -28,7 +28,7 @@ function newProductPage () {
       <div class="p-2"><h3>商品清單</h3></div>
       <div class="p-2"><BtnGroup/></div>
       <div class="p-2">
-        <a class="btn btn-dark" href="" @click="newProductPage">新增商品</a>
+        <a class="btn btn-dark" href="#" @click="newProductPage">新增商品</a>
       </div>
     </div>
     <table class="table table-hover">

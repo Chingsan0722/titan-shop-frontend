@@ -7,7 +7,8 @@ export const useCartStore = defineStore('carts', {
   state: () => ({
     carts: ref([]),
     inCart: ref(0),
-    totalAmount: ref(0)
+    totalAmount: ref(0),
+    isLoading: ref(false)
   }),
   // could also be defined as
   // state: () => ({ count: 0 })

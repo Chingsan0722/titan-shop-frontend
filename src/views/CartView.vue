@@ -42,6 +42,7 @@ const clearCart = async () => {
                   <th scope="col">商品名稱</th>
                   <th scope="col">金額</th>
                   <th scope="col">數量</th>
+                  <th scope="col">庫存</th>
                   <th scope="col">小計</th>
                   <th scope="col">移除商品</th>
                 </tr>

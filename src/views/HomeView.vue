@@ -16,7 +16,6 @@ const searchFilterProducts = () => {
   }
 }
 const searchProducts = () => {
-  getData()
   productStore.setProducts(searchFilterProducts())
 }
 // search price

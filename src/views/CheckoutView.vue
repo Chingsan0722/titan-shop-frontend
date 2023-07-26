@@ -3,7 +3,9 @@ import { ref } from 'vue'
 import { useUserStore } from '../stores/userInfo'
 import { useOrderStore } from '../stores/order'
 import { orderAPI } from '../api/order'
+import { useRouter } from 'vue-router'
 import OrderItems from '../components/OrderItems.vue'
+const router = useRouter()
 const userStore = useUserStore()
 const orderStore = useOrderStore()
 const totalAmount = ref()
@@ -15,6 +17,9 @@ const getOrders = async () => {
   }
 }
 getOrders()
+function toHome () {
+  router.push('/')
+}
 </script>
 <template>
   <div class="container mt-5">
@@ -56,7 +61,7 @@ getOrders()
       </h1>
     </div>
     <div class="text-center">
-      <a class="btn btn-lg btn-dark" href="/">還不回去買爆 ?</a>
+      <a class="btn btn-lg btn-dark" href="#" @click="toHome">還不回去買爆 ?</a>
     </div>
   </div>
 </template>

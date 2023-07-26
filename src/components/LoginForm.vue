@@ -22,6 +22,7 @@ const login = async () => {
       users.login = ref(true)
       router.push('/')
     } else {
+      window.alert('帳號或密碼錯誤')
       console.error('Login failed', result.error)
     }
   } catch (error) {
@@ -48,10 +49,6 @@ const login = async () => {
               <div class="mb-3">
                 <label for="password" class="form-label">Password</label>
                 <input v-model="users.password" type="password" class="form-control" id="password" placeholder="Enter your password" autocomplete="password" required>
-              </div>
-              <div class="mb-3 form-check">
-                <input v-model="users.rememberMe" type="checkbox" class="form-check-input" id="rememberMe">
-                <label class="form-check-label" for="rememberMe">Remember me</label>
               </div>
               <button :disabled="isLoading" type="submit" class="btn btn-primary">
                 <span v-if="isLoading" class="spinner-border spinner-border-sm"></span>

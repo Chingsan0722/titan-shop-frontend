@@ -1,5 +1,6 @@
 <script setup>
 import { watch } from 'vue'
+import { storeToRefs } from 'pinia'
 import { useUserStore } from '../stores/userInfo'
 import { useProductStore } from '../stores/product'
 import { useCartStore } from '../stores/cart'
@@ -9,9 +10,9 @@ const router = useRouter()
 const cartStore = useCartStore()
 const productStore = useProductStore()
 const userStore = useUserStore()
+const { role } = storeToRefs(userStore)
 function logOut () {
   userStore.logOut()
-  router.push('/')
 }
 function loginPage () {
   router.push('/login')
@@ -26,7 +27,10 @@ function switchCategory (categoryId) {
   productStore.categorySwitch = categoryId
 }
 const getCarts = async () => {
-  const carts = await cartAPI.getCart()
+  let carts
+  if (role.value === 'user') {
+    carts = await cartAPI.getCart()
+  }
   if (carts) cartStore.carts = carts
 }
 getCarts()
@@ -67,17 +71,17 @@ watch(() => cartStore.carts, () => {
         </ul>
         <ul class="navbar-nav  flex-wrap bd-navbar-nav py-md-0">
           <li class="nav-item me-3">
-            <a v-if="userStore.role === 'user'" type="button" class="btn btn-outline-primary" href="" @click="cartPage">
+            <a v-if="userStore.role === 'user'" type="button" class="btn btn-outline-primary" href="#" @click="cartPage">
               購物車 <span class="badge bg-primary">{{ cartStore.inCart }}</span>
               <span class="visually-hidden">in carts</span>
             </a>
-            <a v-else-if="userStore.role === 'admin'" type="button" class="btn btn-outline-primary" href="" @click="sellerPage">
+            <a v-else-if="userStore.role === 'admin'" type="button" class="btn btn-outline-primary" href="#" @click="sellerPage">
               商家管理
             </a>
           </li>
           <li class="nav-item">
-            <a v-if="userStore.role === 'admin' || userStore.role === 'user'" class="nav-link text-primary" href="" aria-disabled="true" @click="logOut">Logout</a>
-            <a v-else-if="userStore.role === 'visitor'" class="nav-link text-primary" aria-disabled="true" href="" @click="loginPage">Login</a>
+            <a v-if="userStore.role === 'admin' || userStore.role === 'user'" class="nav-link text-primary" href="/" aria-disabled="true" @click="logOut">Logout</a>
+            <a v-else-if="userStore.role === 'visitor'" class="nav-link text-primary" aria-disabled="true" href="#" @click="loginPage">Login</a>
           </li>
         </ul>
       </div>
