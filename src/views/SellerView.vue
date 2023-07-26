@@ -87,6 +87,7 @@ watch(() => productStore.sellerSort, (newValue) => {
           <th scope="col">移除</th>
         </tr>
       </thead>
+      <div v-if="productStore.products.length === 0" class="m-2 text-start"><h5>還沒建立商品喔</h5></div>
       <tbody>
         <tr v-for="product in productStore.products" :key="product.id">
           <SellerProduct :product="product"/>

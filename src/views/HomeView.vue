@@ -114,6 +114,7 @@ watch(() => productStore.homeSort, (newValue) => {
       <div v-for="product in productStore.products" :key="product.id" class="col col-md-3 mb-3">
         <CardProduct :product="product" />
       </div>
+      <div v-if="productStore.products.length === 0" class="m-5 text-center"><h4>沒有相符的商品</h4></div>
     </div>
     <Pagination/>
   </div>
