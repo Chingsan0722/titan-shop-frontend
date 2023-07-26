@@ -51,7 +51,8 @@ const offProduct = async () => {
 <template>
   <div class="card align-center">
     <router-link :to="`/product/${product.id}`">
-      <img :src="product.image" alt="Product Image" class="card-img-top">
+      <img v-if="!product.image" src="./../assets/mockProduct.svg" alt="mock image" class="card-img-top">
+      <img v-else :src="product.image" alt="Product Image" class="card-img-top">
     </router-link>
     <div class="card-body">
       <h5 class="card-title text-center">{{ product.name }}</h5>
