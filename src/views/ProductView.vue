@@ -1,16 +1,20 @@
 <script setup>
 import { storeToRefs } from 'pinia'
 import { ref } from 'vue'
+import { useUserStore } from '../stores/userInfo'
 import { useCartStore } from '@/stores/cart'
 import { useProductStore } from '@/stores/product'
 import { useRouter } from 'vue-router'
 import { productAPI } from '../api/product'
 import { cartAPI } from '../api/cart'
 const isLoading = ref(false)
+const isAvailable = ref(true)
+const userStore = useUserStore()
 const cartStore = useCartStore()
 const productStore = useProductStore()
 const { product } = storeToRefs(productStore)
 const route = useRouter()
+const role = userStore.role
 const id = route.currentRoute._value.params.id
 const getData = async () => {
   const result = await productAPI.getProduct(id)
@@ -35,6 +39,29 @@ const addCart = async () => {
     isLoading.value = false
   }
 }
+
+const offProduct = async () => {
+  try {
+    isLoading.value = true
+    const formData = new FormData()
+    formData.append('available', false)
+    const responseA = await productAPI.updateProduct(id, formData)
+    if (responseA.success) {
+      window.alert('已下架商品')
+      isAvailable.value = false
+      const responseB = await productAPI.getAllProducts()
+      if (responseB.success) {
+        productStore.setProducts(responseB.data.filter((product) => product.available === 1))
+      }
+    } else {
+      window.alert('下架失敗，請稍後再試')
+    }
+  } catch (error) {
+    console.error(error)
+  } finally {
+    isLoading.value = false
+  }
+}
 </script>
 <template>
   <div class="container mt-5">
@@ -50,9 +77,17 @@ const addCart = async () => {
         <h3>NTD $ {{ product ? product.price : '0' }}</h3>
         <h5>庫存: {{ product ? product.stock : '0' }}</h5>
         <h5>已售出: {{ product ? product.totalSold : '0' }}</h5>
-        <button :disabled="isLoading" class="btn btn-primary" @click="addCart">
-          <span v-if="isLoading" class="spinner-border spinner-border-sm"></span>
-          Add to Cart</button>
+        <div v-if="isAvailable">
+          <button v-if="role === 'user'" :disabled="isLoading" class="btn btn-primary" @click="addCart">
+            <span v-if="isLoading" class="spinner-border spinner-border-sm"></span>
+            加到購物車</button>
+          <button v-if="role === 'admin'" :disabled="isLoading" class="btn btn-warning" @click="offProduct">
+            <span v-if="isLoading" class="spinner-border spinner-border-sm"></span>
+            下架商品</button>
+        </div>
+        <div v-else>
+          <button class="btn btn-outline-primary" disabled>商品已下架</button>
+        </div>
       </div>
     </div>
   </div>
