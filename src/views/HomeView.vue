@@ -2,7 +2,6 @@
 import { watch, ref } from 'vue'
 import CardProduct from '../components/CardProduct.vue'
 import DropdownMenu from '../components/DropdownMenu.vue'
-import Pagination from '../components/PaginationComp.vue'
 import { useProductStore } from '@/stores/product'
 import { productAPI } from '../api/product'
 const productStore = useProductStore()
@@ -116,6 +115,5 @@ watch(() => productStore.homeSort, (newValue) => {
       </div>
       <div v-if="productStore.products.length === 0" class="m-5 text-center"><h4>沒有相符的商品</h4></div>
     </div>
-    <Pagination/>
   </div>
 </template>
