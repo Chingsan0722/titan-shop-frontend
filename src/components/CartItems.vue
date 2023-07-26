@@ -6,11 +6,12 @@ import { useCartStore } from '../stores/cart'
 const cartStore = useCartStore()
 // eslint-disable-next-line vue/no-setup-props-destructure
 const { cart } = defineProps(['cart', 'subtotal'])
+const { isSubtotalLoading } = storeToRefs(cartStore)
+const isRemoveLoading = ref(false)
 const quantity = ref(cart.quantity)
-const { isLoading } = storeToRefs(cartStore)
 watch(quantity, async (newValue, oldValue) => {
-  isLoading.value = true
   try {
+    isSubtotalLoading.value = true
     const responseA = await cartAPI.updateCart(cart.productId, { quantity: newValue })
     if (!responseA.success) {
       window.alert('庫存不足')
@@ -24,23 +25,28 @@ watch(quantity, async (newValue, oldValue) => {
   } catch (error) {
     console.error(error)
   } finally {
-    isLoading.value = false
+    isSubtotalLoading.value = false
   }
 })
 const removeCartItem = async () => {
-  if (window.confirm(`確定要移除${cart.productName}嗎？`)) {
-    const responseA = await cartAPI.deleteCart(cart.productId)
-    if (responseA) {
-      window.alert('Delete success!')
-      const responseB = await cartAPI.getCart()
-      if (responseB) {
-        cartStore.setCarts(responseB)
+  try {
+    if (window.confirm(`確定要移除${cart.productName}嗎？`)) {
+      isRemoveLoading.value = true
+      const responseA = await cartAPI.deleteCart(cart.productId)
+      if (responseA) {
+        const responseB = await cartAPI.getCart()
+        if (responseB) {
+          cartStore.setCarts(responseB)
+        } else {
+          console.error('Get carts failed')
+        }
       } else {
-        console.error('Get carts failed')
+        window.alert('Delete failed!')
       }
-    } else {
-      window.alert('Delete failed!')
     }
+  } catch (error) {
+    console.error(error)
+    isRemoveLoading.value = false
   }
 }
 </script>
@@ -53,12 +59,14 @@ const removeCartItem = async () => {
       <input type="number" class="form-control" v-model="quantity" :placeholder="quantity" min="1" :max="cart.stock">
     </td>
     <td>{{ cart.stock }}</td>
-    <td :disabled="isLoading">
-      <span v-if="isLoading" class="spinner-border spinner-border-sm"></span>
+    <td :disabled="isSubtotalLoading">
+      <span v-if="isSubtotalLoading" class="spinner-border spinner-border-sm"></span>
       <span v-else >${{ cart.subTotal }}</span>
     </td>
     <td>
-      <button class="btn btn-danger btn-sm" @click="removeCartItem(cart.id)">移除</button>
+      <button :disabled="isRemoveLoading" class="btn btn-danger btn-sm" @click="removeCartItem(cart.id)">
+        <span v-if="isRemoveLoading" class="spinner-border spinner-border-sm"></span>
+        移除</button>
     </td>
   </tr>
 </template>

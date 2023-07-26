@@ -2,6 +2,7 @@
 import { ref } from 'vue'
 import { orderAPI } from '../api/order'
 import { useRouter } from 'vue-router'
+import { storeToRefs } from 'pinia'
 import { useOrderStore } from '../stores/order'
 import { useCartStore } from '../stores/cart'
 const cartStore = useCartStore()
@@ -9,6 +10,7 @@ const orderStore = useOrderStore()
 const router = useRouter()
 // eslint-disable-next-line vue/no-setup-props-destructure
 const shippingFee = 60
+const { isSubtotalLoading } = storeToRefs(cartStore)
 const isLoading = ref(false)
 const postOrder = async () => {
   try {
@@ -27,7 +29,7 @@ const postOrder = async () => {
     console.error(error)
     window.alert('訂購失敗，請重新嘗試')
   } finally {
-    isLoading.value = true
+    isLoading.value = false
   }
 }
 </script>
@@ -36,14 +38,18 @@ const postOrder = async () => {
     <div class="card-body">
       <h5 class="card-title">總計</h5>
       <ul class="list-group">
-        <li class="list-group-item d-flex justify-content-between align-items-center">
-          總金額:<span>${{ cartStore.totalAmount }}</span>
+        <li :disabled="isSubtotalLoading" class="list-group-item d-flex justify-content-between align-items-center">
+          總金額:
+          <span v-if="isSubtotalLoading" class="spinner-border spinner-border-sm"></span>
+          <span v-else>${{ cartStore.totalAmount }}</span>
         </li>
         <li class="list-group-item d-flex justify-content-between align-items-center">
           運費:<span>${{ cartStore.totalAmount ? shippingFee : 0}}</span>
         </li>
-        <li class="list-group-item d-flex justify-content-between align-items-center">
-          結帳金額:<span>${{ cartStore.totalAmount ? cartStore.totalAmount + shippingFee : 0 }}</span>
+        <li :disabled="isSubtotalLoading" class="list-group-item d-flex justify-content-between align-items-center">
+          結帳金額:
+          <span v-if="isSubtotalLoading" class="spinner-border spinner-border-sm"></span>
+          <span v-else>${{ cartStore.totalAmount ? cartStore.totalAmount + shippingFee : 0 }}</span>
         </li>
       </ul>
       <div class="text-end">

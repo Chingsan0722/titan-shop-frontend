@@ -3,7 +3,9 @@ import CartItems from '../components/CartItems.vue'
 import CartSummary from '../components/CartSummary.vue'
 import { cartAPI } from '../api/cart'
 import { useCartStore } from '../stores/cart'
+import { ref } from 'vue'
 const cartStore = useCartStore()
+const isLoading = ref(false)
 const getCart = async () => {
   const response = await cartAPI.getCart()
   if (response) {
@@ -14,17 +16,23 @@ const getCart = async () => {
 }
 getCart()
 const clearCart = async () => {
-  if (window.confirm('確定要清空嗎？')) {
-    const responseA = await cartAPI.deleteAllCart()
-    if (responseA) {
-      window.alert('購物車已清空')
-      const responseB = await cartAPI.getCart()
-      if (responseB) {
-        cartStore.setCarts(responseB)
-      } else {
-        console.error('Get carts failed')
+  try {
+    if (window.confirm('確定要清空嗎？')) {
+      isLoading.value = true
+      const responseA = await cartAPI.deleteAllCart()
+      if (responseA) {
+        const responseB = await cartAPI.getCart()
+        if (responseB) {
+          cartStore.setCarts(responseB)
+        } else {
+          console.error('Get carts failed')
+        }
       }
     }
+  } catch (error) {
+    console.error(error)
+  } finally {
+    isLoading.value = false
   }
 }
 </script>
@@ -48,11 +56,14 @@ const clearCart = async () => {
                 </tr>
               </thead>
               <tbody>
+                <div v-if="cartStore.carts.length === 0"><h6>購物車中沒有商品喔，快去挑選吧</h6></div>
                 <CartItems v-for="cart in cartStore.carts" :key="cart.productId" :cart="cart"/>
               </tbody>
             </table>
             <div class="text-center">
-              <button class="btn btn-info btn-sm m-1" @click="clearCart">清空購物車</button>
+              <button v-if="cartStore.carts.length > 0" :disabled="isLoading" class="btn btn-info btn-sm m-1" @click="clearCart">
+                <span v-if="isLoading" class="spinner-border spinner-border-sm"></span>
+                清空購物車</button>
             </div>
           </div>
         </div>

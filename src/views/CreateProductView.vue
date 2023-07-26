@@ -30,10 +30,10 @@ const postData = async () => {
     formData.append('image', image.value)
     const response = await productAPI.addProduct(formData)
     if (response.success) {
-      window.alert('Product added successfully!')
+      window.alert('商品已新增')
       router.push('/seller')
     } else {
-      window.alert('Failed to add product:', response.error)
+      window.alert('新增失敗，請稍後再試', response.error)
     }
   } catch (error) {
     console.error(error)
