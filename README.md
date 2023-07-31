@@ -7,7 +7,7 @@
 ## Project Preview
 
 ![image](./public/screenshot-home.png)
-
+![image](./public/screenshot-product.png)
 ---
 
 ## About The Project
@@ -19,11 +19,13 @@
 2. 每個商品頁面都有詳細的描述、價格和庫存訊息，讓使用者可以快了解商品。
 3. 使用者可以選擇將商品加入購物車，並隨時查看購物車內的商品數量和總金額。
 4. 使用者可以在購物清單中對商品數量進行調整，並在同個頁面中送出訂單。
+![image](./public/screenshot-cart.png)
 
 管理者
 1. 管理者可以在網站主頁下架商品。
 2. 管理頁面可以進行銷售額、銷售量、庫存數量的排序。
 3. 頁面中也能新增及編輯商品，或調整上、下架及移除商品。
+![image](./public/screenshot-seller.png)
 
 為了實現這些功能，前端部分使用了Vue 3作為主要框架，Bootstrap 5用於設計元件和排版，使網站在不同設備上都能具有良好的響應式設計。
 後端部分使用了Express.js作為 Web API 框架，處理來自前端的請求並與MySQL數據庫存取資料。
@@ -42,6 +44,9 @@
 - CSS
 - Bootstrap
 
+### Deploy with
+- Render
+
 ---
 ## Getting Started
 
@@ -57,7 +62,7 @@
 
 2. 在 git bash 或 PowerShell 中移動到該資料夾並載入組件:
 
-   `npm install`
+   `cd titan-shop-frontend` `npm install`
 
 3-1-1. 安裝結束後，將專案進行打包:
 
